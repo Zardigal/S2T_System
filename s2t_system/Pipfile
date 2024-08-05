@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+sqlalchemy = "*"
+alembic = "*"
+psycopg2-binary = "*"
+openai-whisper = "*"
+python-dotenv = "*"
+pytz = "*"
+fastapi-users = {extras = ["sqlalchemy"], version = "*"}
+asyncpg = "*"
+setuptools-rust = "*"
+python-multipart = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
