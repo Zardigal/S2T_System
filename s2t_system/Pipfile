@@ -17,6 +17,7 @@ setuptools-rust = "*"
 python-multipart = "*"
 ray = {extras = ["serve"], version = "*"}
 ffmpeg-python = "*"
+gunicorn = "*"
 
 [dev-packages]
 
