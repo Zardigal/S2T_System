@@ -7,7 +7,7 @@ WORKDIR /s2t_system
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 RUN pip install pipenv
-RUN pipenv install --deploy --system
+RUN pipenv install
 
 RUN apt update && \
 apt install \
@@ -17,5 +17,3 @@ ffmpeg \
 COPY . .
 
 RUN chmod a+x docker/app.sh
-
-# CMD [ "gunicorn" , "src.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000" ]
