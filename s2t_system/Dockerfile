@@ -7,7 +7,6 @@ WORKDIR /s2t_system
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 RUN pip install pipenv
-RUN pipenv shell
 RUN pipenv install --deploy --system
 
 RUN apt update && \
