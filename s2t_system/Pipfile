@@ -17,6 +17,7 @@ asyncpg = "*"
 setuptools-rust = "*"
 python-multipart = "*"
 ray = {extras = ["serve"], version = "*"}
+ffmpeg-python = "*"
 
 [dev-packages]
 
