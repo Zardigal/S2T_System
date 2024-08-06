@@ -4,18 +4,12 @@ RUN mkdir /s2t_system
 
 WORKDIR /s2t_system
 
-# COPY Pipfile Pipfile
-# COPY Pipfile.lock Pipfile.lock
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 RUN apt update && \
 apt install \
 ffmpeg \
 -y
-RUN pip3 install --upgrade pip
-RUN pip3 install pipenv
-COPY Pipfile* /app/
-COPY Pipfile.lock* /app/
-RUN cd /app && pipenv install
-
 
 COPY . .
 
