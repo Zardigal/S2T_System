@@ -15,7 +15,6 @@ fastapi-users = {extras = ["sqlalchemy"], version = "*"}
 asyncpg = "*"
 setuptools-rust = "*"
 python-multipart = "*"
-ray = {extras = ["serve"], version = "*"}
 ffmpeg-python = "*"
 gunicorn = "*"
 
