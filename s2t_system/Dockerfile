@@ -6,7 +6,6 @@ WORKDIR /s2t_system
 
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
-RUN apt install python3-pip -y
 RUN pip install pipenv
 RUN pipenv install --deploy --system
 
