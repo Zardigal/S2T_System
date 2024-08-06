@@ -1,0 +1,39 @@
+networks:
+  dev:
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db_s2t
+    command: -p 1200
+    expose:
+      - 1200
+    env_file:
+      - ./s2t_system/.env-non-dev
+    networks:
+      - dev
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+    depends_on:
+      - backend
+    networks:
+      - dev
+
+  backend:
+    build:
+      context: ./s2t_system
+    env_file:
+        - ./s2t_system/.env-non-dev
+    container_name: s2t
+    command: ["/s2t_system/docker/app.sh"]
+    ports:
+      - 7777:8000
+    depends_on:
+      - db
+    networks:
+      - dev
