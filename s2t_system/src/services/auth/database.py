@@ -34,7 +34,9 @@ class UserDb(SQLAlchemyBaseUserTable[int], Base):
 
     # App specific
     username: Mapped[int] = mapped_column(String, nullable=False)
-    registered_at: Mapped[int] = mapped_column(TIMESTAMP, default=datetime.now(pytz.UTC))
+    registered_at: Mapped[datetime] = mapped_column(
+        TIMESTAMP(timezone=True), default=datetime.now(pytz.UTC)
+    )
     role_id: Mapped[int] = mapped_column(Integer, ForeignKey(role.c.id))
 
 

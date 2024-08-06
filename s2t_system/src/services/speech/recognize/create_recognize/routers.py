@@ -7,6 +7,6 @@ from src.services.speech.recognize.create_recognize.service import recognize
 router = APIRouter(prefix='/recognize', tags=['Recognize'])
 
 @router.post('')
-async def send_recognize(file: Annotated[bytes, File()]) -> Transcription:
-    transcription = await recognize(file)
+def send_recognize(file: Annotated[bytes, File()]) -> Transcription:
+    transcription = recognize(file)
     return transcription

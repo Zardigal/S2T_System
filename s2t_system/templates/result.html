@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Recognize result</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Your audio recognize result</h1>
+    <a href="/"><p>Upload another audio</p></a>
+    <p>Text from Your audio:<br> "{{ text }}"</p>
+    <div>
+        <p>Words from Your audio:</p>
+        <ol class="list-group list-group-numbered">
+            {% for word in words %}
+            <li class="list-group-item"> {{ word.word }}:  {{ word.startTime }}  -  {{ word.endTime }}</li>
+            {% endfor %}
+        </ol>
+    </div> 
+{% endblock %}
