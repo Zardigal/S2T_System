@@ -6,13 +6,13 @@ WORKDIR /s2t_system
 
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
-RUN pip install pipenv
-RUN pipenv install
-
 RUN apt update && \
 apt install \
 ffmpeg \
 -y
+RUN apt install pipenv -y
+RUN pipenv install
+
 
 COPY . .
 
