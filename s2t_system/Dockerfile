@@ -1,5 +1,7 @@
 FROM python:3.9-slim
 
+RUN echo "sysctl vm.overcommit_memory=1" >> /etc/sysctl.conf
+
 RUN mkdir /s2t_system
 
 WORKDIR /s2t_system
