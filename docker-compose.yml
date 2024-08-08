@@ -29,13 +29,11 @@ services:
       - dev
 
   redis:
-    image: redis:6.2-alpine
+    image: redis:latest
     container_name: redis
     restart: always
     networks:
       - dev
-    ports:
-      - "1300:1300"
 
   celery:
     build:

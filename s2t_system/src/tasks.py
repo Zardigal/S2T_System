@@ -13,7 +13,10 @@ class GetTranscriptionTaskBase(Task):
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         # Delete the temp file
         tmp_path = Path(kwargs['file_path'])
-        tmp_path.unlink()
+        try: 
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
         return super().after_return(status, retval, task_id, args, kwargs, einfo)
 
 @celery.task(base=GetTranscriptionTaskBase)
