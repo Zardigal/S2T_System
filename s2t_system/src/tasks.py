@@ -1,28 +1,17 @@
-from pathlib import Path
-
 import whisper
-from whisper import Whisper
-from celery import Celery, Task
+from celery import Celery
 from src.config import REDIS_HOST
+from src.services.speech.recognize.send_recognize.utils import load_audio
+from whisper import Whisper
 
 celery = Celery('tasks', broker=REDIS_HOST, backend=REDIS_HOST)
 celery.autodiscover_tasks(force=True)
 
 
-class GetTranscriptionTaskBase(Task):
-    def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        # Delete the temp file
-        tmp_path = Path(kwargs['file_path'])
-        try: 
-            tmp_path.unlink()
-        except FileNotFoundError:
-            pass
-        return super().after_return(status, retval, task_id, args, kwargs, einfo)
-
-@celery.task(base=GetTranscriptionTaskBase)
-def get_transcription(file_path: str):
+@celery.task
+def _recognize(file: str):
     model: Whisper = whisper.load_model("tiny")
-    audio = whisper.load_audio(file_path)
+    audio = load_audio(file)
     transcript = model.transcribe(
         word_timestamps=True,
         audio=audio

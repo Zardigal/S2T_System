@@ -1,12 +1,11 @@
 import time
 
 from fastapi import UploadFile
-from src.services.speech.recognize.send_recognize.utils import handle_upload_file
-from src.tasks import celery, get_transcription
+from src.tasks import celery, _recognize
 
 
 def recognize(file: UploadFile):
-    task = handle_upload_file(file, get_transcription)
+    task = _recognize.delay(file.file.read())
     time.sleep(3)
     task = celery.AsyncResult(task.id)
     if task.ready():
