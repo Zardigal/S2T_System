@@ -9,7 +9,7 @@ services:
     expose:
       - 1200
     env_file:
-      - ./s2t_system/.env-non-dev
+      - ./s2t_system/.env
     networks:
       - dev
 
@@ -28,7 +28,7 @@ services:
     build:
       context: ./s2t_system
     env_file:
-        - ./s2t_system/.env-non-dev
+        - ./s2t_system/.env
     container_name: s2t
     command: ["/s2t_system/docker/app.sh"]
     ports:
@@ -69,7 +69,7 @@ services:
     container_name: celery
     command: ["celery", "--app=src.tasks:celery", "worker", "-l", "INFO"]
     env_file:
-      - ./s2t_system/.env-non-dev
+      - ./s2t_system/.env
     depends_on:
       - redis
       - db
@@ -87,7 +87,7 @@ services:
       - celery
       - backend
     env_file:
-      - ./s2t_system/.env-non-dev
+      - ./s2t_system/.env
     networks:
       - dev
     ports:
