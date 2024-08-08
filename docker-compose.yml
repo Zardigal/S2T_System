@@ -52,7 +52,7 @@ services:
     build:
       context: ./s2t_system
     container_name: celery
-    command: ["/s2t_system/docker/celery.sh", "celery"]
+    command: ["celery", "--app=src.tasks:celery", "worker", "-l", "INFO"]
     depends_on:
       - redis
     networks:
@@ -62,7 +62,7 @@ services:
     build:
       context: ./s2t_system
     container_name: flower
-    command: ["/s2t_system/docker/celery.sh", "flower"]
+    command: ["celery", "--app=src.tasks:celery", "flower"]
     depends_on:
       - redis
       - celery
