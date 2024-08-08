@@ -15,4 +15,3 @@ redis-server \
 COPY . .
 
 RUN chmod a+x docker/app.sh
-RUN chmod a+x docker/celery.sh
