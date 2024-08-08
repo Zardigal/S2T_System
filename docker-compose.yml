@@ -29,13 +29,10 @@ services:
       - dev
 
   redis:
-    image: redis:alpine
+    image: redis:latest
     restart: always
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
     networks:
       - dev
-    volumes:
-      - ./redisdata:/data
     ports:
       - "1300:1300"
 
