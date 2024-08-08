@@ -45,9 +45,9 @@ services:
         redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
       '
     ports:
-      - "6380:6379"
+      - "1300:1300"
     expose:
-      - 6379
+      - 1300
     restart: unless-stopped
     tty: true
     stdin_open: true
