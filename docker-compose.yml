@@ -35,5 +35,38 @@ services:
       - 7777:8000
     depends_on:
       - db
+      - redis
     networks:
       - dev
+
+  redis:
+    image: redis
+    container_name: redis
+    command: --port 6379
+    expose:
+      - 6379
+    networks:
+      - dev
+  
+  celery:
+    build:
+      context: ./s2t_system
+    container_name: celery
+    command: ["/s2t_system/docker/celery.sh", "celery"]
+    depends_on:
+      - redis
+    networks:
+      - dev
+
+  flower:
+    build:
+      context: ./s2t_system
+    container_name: flower
+    command: ["/s2t_system/docker/celery.sh", "flower"]
+    depends_on:
+      - redis
+      - celery
+    networks:
+      - dev
+    ports:
+      - 5555:5555
