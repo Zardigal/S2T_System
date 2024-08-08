@@ -1,16 +1,23 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy import select
-from src.database import get_async_session
-from src.services.speech.recognize.get_transcription.schemas import Transcription
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.services.speech.recognize.models import transcription
+from typing import Union
 
+from fastapi import APIRouter, HTTPException
+from src.services.speech.recognize.get_transcription.schemas import (
+    TaskBase,
+    Transcription,
+)
+from src.tasks import celery
 
 router = APIRouter(prefix='/transcription', tags=['Recognize'])
 
 
-@router.get('/')
-async def get_transcription(transcription_id: int, session: AsyncSession = Depends(get_async_session)) -> Transcription:
-    query = select(transcription).where(transcription.c.id == transcription_id)
-    result = await session.execute(query)
-    return result.first()
+@router.get('/', response_model=Union[TaskBase, Transcription])
+async def get_transcription(task_id: str) -> Transcription:
+    try:
+        task = celery.AsyncResult(task_id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    if task.ready():
+        return task.get()
+    else:
+        return {'id': task.id, 'status': 'pending'}

@@ -1,16 +1,30 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+from redis import asyncio as aioredis
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from src.config import CORS_ALLOWED_ORIGINS
-
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from pages.router import router as router_pages
+from src.config import CORS_ALLOWED_ORIGINS, REDIS_HOST
 from src.services.auth.routers import router as router_auth
 from src.services.speech.routers import router as router_speech
-from pages.router import router as router_pages
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    redis = aioredis.from_url(REDIS_HOST)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    yield
 
 
 app = FastAPI(
-    title='S2T System'
+    title='S2T System',
+    lifespan=lifespan
 )
+
 
 cors_allowed_origins = CORS_ALLOWED_ORIGINS.split(',')
 

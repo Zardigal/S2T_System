@@ -21,7 +21,4 @@ def handle_upload_file(
     upload_file: UploadFile, handler: Callable[[Path], dict]
 ) -> dict:
     tmp_path = save_upload_file_tmp(upload_file)
-    try:
-        return handler(file_path=tmp_path)
-    finally:
-        tmp_path.unlink()  # Delete the temp file
+    return handler.delay(file_path=str(tmp_path))
