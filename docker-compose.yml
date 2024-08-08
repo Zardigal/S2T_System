@@ -57,6 +57,8 @@ services:
       '
     ports:
       - "6380:6379"
+    expose:
+      - 6379
     restart: unless-stopped
     tty: true
     stdin_open: true
@@ -66,8 +68,12 @@ services:
       context: ./s2t_system
     container_name: celery
     command: ["celery", "--app=src.tasks:celery", "worker", "-l", "INFO"]
+    env_file:
+      - ./s2t_system/.env-non-dev
     depends_on:
       - redis
+      - db
+      - backend
     networks:
       - dev
 
@@ -79,6 +85,9 @@ services:
     depends_on:
       - redis
       - celery
+      - backend
+    env_file:
+      - ./s2t_system/.env-non-dev
     networks:
       - dev
     ports:
