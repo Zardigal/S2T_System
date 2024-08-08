@@ -29,7 +29,8 @@ services:
       - dev
 
   redis:
-    image: redis:latest
+    image: redis:6.2-alpine
+    container_name: redis
     restart: always
     networks:
       - dev
@@ -40,7 +41,7 @@ services:
     build:
       context: ./s2t_system
     container_name: celery
-    command: celery -A src.tasks worker -l info
+    command: celery -A src.tasks:celery worker -l info
     env_file:
       - ./s2t_system/.env
     depends_on:
@@ -54,7 +55,7 @@ services:
     build:
       context: ./s2t_system
     container_name: flower
-    command: celery -A src.tasks flower
+    command: celery -A src.tasks:celery flower
     depends_on:
       - redis
       - celery
