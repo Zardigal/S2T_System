@@ -1,102 +1,13 @@
-# from typing import Annotated, Callable, Optional
+##########################
+# With tmp file without ray serve
 
+# import shutil
 # import whisper
-# from ray import serve
-# from fastapi import File, UploadFile
 # from whisper import Whisper
-
-
-
-
-
-
-# import ffmpeg
-# import numpy as np
-
-# SAMPLE_RATE = 16000
-
-
-# def load_audio(file_bytes: bytes, sr: int = 16_000) -> np.ndarray:
-#     """
-#     Use file's bytes and transform to mono waveform, resampling as necessary
-#     Parameters
-#     ----------
-#     file: bytes
-#         The bytes of the audio file
-#     sr: int
-#         The sample rate to resample the audio if necessary
-#     Returns
-#     -------
-#     A NumPy array containing the audio waveform, in float32 dtype.
-#     """
-#     try:
-#         # This launches a subprocess to decode audio while down-mixing and resampling as necessary.
-#         # Requires the ffmpeg CLI and `ffmpeg-python` package to be installed.
-#         out, _ = (
-#             ffmpeg.input('pipe:', threads=0)
-#             .output("pipe:", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
-#             .run_async(pipe_stdin=True, pipe_stdout=True)
-#         ).communicate(input=file_bytes)
-
-#     except ffmpeg.Error as e:
-#         raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
-
-#     return np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
-
-
-# async def recognize(file: Annotated[bytes, File()]):
-#     model: Whisper = whisper.load_model("tiny")
-#     audio = load_audio(file)
-#     transcript = model.transcribe(
-#         word_timestamps=True,
-#         audio=audio
-#     )
-
-#     words_result: list = []
-#     for words in [segment['words'] for segment in transcript['segments']]:
-#         for word in words:
-#             words_result.append(
-#                 {
-#                     "startTime": f"{float(word['start'])}s",
-#                     "endTime": f"{float(word['end'])}s",
-#                     "word": word['word']
-#                 }
-#             )
-#     return {'words': words_result, 'text': transcript['text']}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# from pathlib import Path
+# from tempfile import NamedTemporaryFile
+# from typing import Callable
+# from fastapi import UploadFile
 
 
 # def save_upload_file_tmp(upload_file: UploadFile) -> Path:
@@ -115,13 +26,13 @@
 # ) -> dict:
 #     tmp_path = save_upload_file_tmp(upload_file)
 #     try:
-#         return handler(file_path=tmp_path)  # Do something with the saved temp file
+#         return handler(file_path=tmp_path)
 #     finally:
 #         tmp_path.unlink()  # Delete the temp file
 
 
 # def _get_recognize(file_path: Path):
-#     model: Whisper = whisper.load_model("base")
+#     model: Whisper = whisper.load_model("tiny")
 #     audio = whisper.load_audio(file_path)
 #     transcript = model.transcribe(
 #         word_timestamps=True,
@@ -144,13 +55,6 @@
 # def recognize(file: UploadFile):
 #     result = handle_upload_file(file, _get_recognize)
 #     return result
-
-
-
-
-
-
-
 
 
 ##########################

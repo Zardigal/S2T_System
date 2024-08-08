@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, File, Request
+from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.templating import Jinja2Templates
 
 from src.services.speech.recognize.create_recognize.schemas import Transcription
