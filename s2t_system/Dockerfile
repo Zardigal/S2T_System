@@ -11,6 +11,7 @@ apt install \
 ffmpeg \
 -y
 RUN apt-get install redis-server -y
+RUN service redis-server start
 
 COPY . .
 
