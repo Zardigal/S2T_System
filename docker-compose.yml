@@ -29,21 +29,12 @@ services:
       - dev
 
   redis:
-    image: redis:latest
+    image: redis:stable
     container_name: redis
     networks:
       - dev
     volumes:
       - ./redisdata:/data
-    command: >
-      sh -c '
-        mkdir -p /usr/local/etc/redis &&
-        echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
-        echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
-        echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
-        echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
-        redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
-      '
     ports:
       - "1300:1300"
     expose:
@@ -56,7 +47,7 @@ services:
     build:
       context: ./s2t_system
     container_name: celery
-    command: ["celery", "--app=src.tasks:celery", "worker", "-l", "INFO"]
+    command: celery -A src.tasks worker -l info
     env_file:
       - ./s2t_system/.env
     depends_on:
@@ -70,7 +61,7 @@ services:
     build:
       context: ./s2t_system
     container_name: flower
-    command: ["celery", "--app=src.tasks:celery", "flower"]
+    command: celery -A src.tasks flower
     depends_on:
       - redis
       - celery
